@@ -7,10 +7,19 @@ apply plugin: "application"
 task run_example {
     
     // default system is 'unix'
-    def i1 = "racket"
-    def p1 = "connect-four-naive.rkt"
-    def i2 = "racket"
-    def p2 = "connect-four-naive.rkt"
+    // I would prefer to use "racket" and not build, but defining
+    // the interpreter by default is not behavior I want.
+    //def i1 = "racket"
+    //def p1 = "connect-four-naive.rkt"
+    //def i2 = "racket"
+    //def p2 = "connect-four-naive.rkt"
+    def i1 = ""
+    def p1 = "./connect-four-naive"
+    def i2 = ""
+    def p2 = "./connect-four-naive"
+    
+    //build the examples?
+    //dependsOn(build_examples)
     
     if (project.hasProperty('system')) {
         if (system == "windows") {
