@@ -4,6 +4,41 @@ version = 'incubating'
 apply plugin: "java"
 apply plugin: "application"
 
+task run_example {
+    
+    // default system is 'unix'
+    def i1 = "racket"
+    def p1 = "connect-four-naive.rkt"
+    def i2 = "racket"
+    def p2 = "connect-four-naive.rkt"
+    
+    if (project.hasProperty('system')) {
+        if (system == "windows") {
+            i1 = "C:/Racket/Racket.exe"
+            i2 = "C:/Racket/Racket.exe"
+        } else if (system != "unix") {
+            throw new GradleException("unrecognized system '" + system + "'")
+        }
+        if (project.hasProperty('interpreter_1')) i1 = interpreter_1
+        if (project.hasProperty('interpreter_2')) i2 = interpreter_2
+        if (project.hasProperty('program_1')) p1 = program_1
+        if (project.hasProperty('program_2')) p2 = program_2
+        
+    } else {
+        println "Cannot run example without specifying 'system' property."
+        println "try: gradle -Psystem=unix run_example"
+        return
+    }
+    
+    run.args (
+        "--interpreter-1", i1,
+        "--program-1", p1,
+        "--interpreter-2", i2,
+        "--program-2", p2
+    )
+    finalizedBy(run)
+}
+
 sourceSets {
     main.java.srcDir "src/"
 }
@@ -26,3 +61,4 @@ jar.manifest.attributes(
     'Main-Class': mainClassName,
     'Class-Path': configurations.runtimeClasspath.files.collect { it.absolutePath }.join(' ')
 )
+
