@@ -48,14 +48,14 @@ public class Board {
         this.row = row;
         this.column = column;
         this.connectNumber = connectNumber;
-        grid = new int[row][column];
+        grid = new int[column][row];
         loadBoardEmpty();
     }
 
     private void loadBoardEmpty() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                grid[i][j] = 0;
+                grid[j][i] = 0;
             }
         }
     }
@@ -66,8 +66,8 @@ public class Board {
      * */
     private int determineRow(int column) {
  
-        for (int i = 0; i < row; i++) {
-            if (grid[i][column] == 0) {
+        for (int i = row-1; i >= 0; i--) {
+            if (grid[column][i] == 0) {
                 return i;
             }
         }
@@ -82,7 +82,7 @@ public class Board {
  
         int add = determineRow(column);
         if (add != -1) {
-            grid[add][column] = player;
+            grid[column][add] = player;
         }
     }
     
@@ -162,16 +162,10 @@ public class Board {
     }
     
     private boolean checkDiagnolLeftWin(int whichPlayer) {
- 
-        int fromRow = (connectNumber - 1);    // 3
-        int toRow = (row - 1);                // 6
-        int fromColumn = (connectNumber - 1); // 3
-        int toColumn = (column - 1);          // 7
         
-        for (int i = fromRow; i <= toRow; i++) {
- 
-            for (int j = fromColumn; j <= toColumn; j++) {
- 
+        for (int i = connectNumber - 1; i < column; i++) {
+            for (int j = connectNumber - 1; j < row; j++) {
+                 
                 int counter = 0;
                 for (int k = 0; k < connectNumber; k++) {
                     if (grid[i - k][j - k] == whichPlayer) {
@@ -188,14 +182,11 @@ public class Board {
     
     private boolean checkDiagnolRightWin(int whichPlayer) {
  
-        int fromRow = (connectNumber - 1);       // 3
-        int toRow = (row - 1);                   // 6
-        int fromColumn = 0;                      // 0
-        int toColumn = (column - connectNumber); // 4
+        int toColumn = (column - connectNumber); 
         
-        for (int i = fromRow; i <= toRow; i++) {
+        for (int i = connectNumber -1; i < row; i++) {
  
-            for (int j = fromColumn; j <= toColumn; j++) {
+            for (int j = 0; j <= toColumn; j++) {
  
                 int counter = 0;
                 for (int k = 0; k < connectNumber; k++) {

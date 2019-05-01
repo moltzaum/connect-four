@@ -30,8 +30,8 @@ public class Main {
     //
     public static void main(String[] args) { 
         
-        int height = 7;
-        int width = 8;
+        int height = 5;
+        int width = 10;
         
         String arg_i1 = "";
         String arg_p1 = "";
@@ -85,14 +85,14 @@ public class Main {
         
         List<String> cmd1 = new LinkedList<String>(Arrays.asList(
             "--player", "1",
-            "--height", Integer.toString(height),
-            "--width", Integer.toString(width)
+            "--width", Integer.toString(width),
+            "--height", Integer.toString(height)
         ));
         
         List<String> cmd2 = new LinkedList<String>(Arrays.asList(
             "--player", "2",
-            "--height", Integer.toString(height),
-            "--width", Integer.toString(width)
+            "--width", Integer.toString(width),
+            "--height", Integer.toString(height)
         ));
         
         cmd1.add(0, arg_p1);
@@ -121,14 +121,18 @@ public class Main {
             int winner;
             while (true) {
                 p1.sendGrid(board); 
-                board.addPlayerMove(1, p1.getMove());
+                int p = p1.getMove();
+                System.out.println("DEBUG: " + p);
+                board.addPlayerMove(1, p);
                 if (board.playerWon(1)) {
                     winner = 1;
                     break;
                 }
 
-                p2.sendGrid(board);				
-                board.addPlayerMove(2, p2.getMove());
+                p2.sendGrid(board);
+                p = p2.getMove(); 
+                System.out.println("DEBUG: " + p);
+                board.addPlayerMove(2, p);
                 if (board.playerWon(2)) {
                     winner = 2;
                     break;
