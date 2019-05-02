@@ -33,8 +33,8 @@ public class Main {
 
         int height = 5;
         int width = 10;
-        int tGames = 5;
-
+        int tGames = 1;
+        
         String arg_i1 = "";
         String arg_p1 = "";
         String arg_i2 = "";
@@ -81,7 +81,6 @@ public class Main {
             }
         }
 
-        Board board = new Board(height, width, 4);
         PlayerProcess p1;
         PlayerProcess p2;
         
@@ -116,38 +115,42 @@ public class Main {
         //if (!arg_p2.equals(""))
         //    cmd2.add(0, arg_p2);
         //cmd2.add(0, arg_i2);
-        
-        try {
 
-            //System.out.println("DEBUG: " + cmd1);
-            //System.out.println("DEBUG: " + cmd2);
-            p1 = new PlayerProcess(pb.command(cmd1).start());
-            p2 = new PlayerProcess(pb.command(cmd2).start());
+        for( int x = 0; x < tGames; ++x) {
+            Board board = new Board(height, width, 4);
 
-            int winner;
-            while (true) {
-                p1.sendGrid(board);
-                board.addPlayerMove(1, p1.getMove());
-                if (board.playerWon(1)) {
-                    winner = 1;
-                    break;
+            try {
+
+                //System.out.println("DEBUG: " + cmd1);
+                //System.out.println("DEBUG: " + cmd2);
+                p1 = new PlayerProcess(pb.command(cmd1).start());
+                p2 = new PlayerProcess(pb.command(cmd2).start());
+
+                int winner;
+                while (true) {
+                    p1.sendGrid(board);
+                    board.addPlayerMove(1, p1.getMove());
+                    if (board.playerWon(1)) {
+                        winner = 1;
+                        break;
+                    }
+
+                    p2.sendGrid(board);
+                    board.addPlayerMove(2, p2.getMove());
+                    if (board.playerWon(2)) {
+                        winner = 2;
+                        break;
+                    }
                 }
 
-                p2.sendGrid(board);
-                board.addPlayerMove(2, p2.getMove());
-                if (board.playerWon(2)) {
-                    winner = 2;
-                    break;
-                }
+                System.out.printf("The winner is %d\n", winner);
+                p1.close();
+                p2.close();
+
+            } catch (IOException e) {
+                System.out.println(e);
+                return;
             }
-
-            System.out.printf("The winner is %d\n", winner);
-            p1.close();
-            p2.close();
-
-        } catch (IOException e) {
-            System.out.println(e);
-            return;
         }
     }
 }
