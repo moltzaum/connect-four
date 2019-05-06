@@ -52,6 +52,22 @@ public class Board {
         loadBoardEmpty();
     }
 
+
+    /* Check for board being full ** This would be a draw */
+    /* Returns 1 if still space on board left or 0 if totaly full ..ie draw*/
+    public int checkDraw()
+    {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                if(grid[j][i] == 0)
+                {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
     private void loadBoardEmpty() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
