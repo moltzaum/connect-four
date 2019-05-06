@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
+import java.util.concurrent.TimeUnit;
 
 // API:
 // {"grid": [[0, 0, 0], [0, 0, 0], [0, 0, 0]]}
@@ -34,6 +35,10 @@ public class Main {
         int height = 5;
         int width = 10;
         int tGames = 1;
+
+        int draws = 0;
+        int player1Wins = 0;
+        int player2Wins = 0;
         
         String arg_i1 = "";
         String arg_p1 = "";
@@ -116,6 +121,8 @@ public class Main {
         //    cmd2.add(0, arg_p2);
         //cmd2.add(0, arg_i2);
 
+        //tGames = 2;
+
         for( int x = 0; x < tGames; ++x) {
             Board board = new Board(height, width, 4);
 
@@ -131,19 +138,33 @@ public class Main {
                     p1.sendGrid(board);
                     board.addPlayerMove(1, p1.getMove());
                     if (board.playerWon(1)) {
+                        player1Wins +=1;
                         winner = 1;
                         break;
                     }
-
                     p2.sendGrid(board);
                     board.addPlayerMove(2, p2.getMove());
                     if (board.playerWon(2)) {
+                        player2Wins +=1;
                         winner = 2;
+                        break;
+                    }
+                    if(board.checkDraw() == 0)
+                    {
+                        draws +=1;
+                        winner = 3;
                         break;
                     }
                 }
 
-                System.out.printf("The winner is %d\n", winner);
+                if(winner <= 2)
+                {
+                    System.out.printf("The winner is %d\n", winner);
+                }
+                else{
+                    System.out.printf("DRAW !!\n");
+                }
+                
                 p1.close();
                 p2.close();
 
@@ -152,5 +173,16 @@ public class Main {
                 return;
             }
         }
+
+        try{
+             Thread.sleep(1000);
+        }
+        catch(InterruptedException ex){
+            Thread.currentThread().interrupt();
+        }
+        
+
+        System.out.printf("Total Games played %d\n Total of Draws %d\n Player 1 Won %d Games!!\n Player 2 Won %d Games!!\n", tGames,draws,player1Wins,player2Wins);
+
     }
 }
