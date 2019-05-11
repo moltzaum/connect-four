@@ -33,7 +33,7 @@ public class Main {
     public static void main(String[] args) {
 
         int height = 5;
-        int width = 10;
+        int width = 5;
         int tGames = 1;
 
         int draws = 0;
@@ -44,7 +44,7 @@ public class Main {
         String arg_p1 = "";
         String arg_i2 = "";
         String arg_p2 = "";
-
+        
         for (int i = 0; i < args.length; i++) {
 
             if (!args[i].startsWith("--")) {
@@ -149,7 +149,7 @@ public class Main {
                         winner = 2;
                         break;
                     }
-                    if(board.checkDraw() == 0)
+                    if (board.checkDraw() == 0)
                     {
                         draws +=1;
                         winner = 3;
@@ -157,11 +157,9 @@ public class Main {
                     }
                 }
 
-                if(winner <= 2)
-                {
+                if (winner <= 2) {
                     System.out.printf("The winner is %d\n", winner);
-                }
-                else{
+                } else {
                     System.out.printf("DRAW !!\n");
                 }
                 

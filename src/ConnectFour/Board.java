@@ -5,6 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+
 /** 
  * Serializable board to JSON.
  *
@@ -37,6 +41,9 @@ public class Board {
     private int row;
     private int column;
 
+    JFrame frame;
+    JLabel [][]slot;
+    
     @Expose
     private int[][] grid;
 
@@ -50,17 +57,43 @@ public class Board {
         this.connectNumber = connectNumber;
         grid = new int[column][row];
         loadBoardEmpty();
+        initializeGUI();
     }
+    
+    final ImageIcon defaultIcon = new ImageIcon(getClass().getResource("/ConnectFour/un.png"));
+    final ImageIcon p1 = new ImageIcon(getClass().getResource("/ConnectFour/player1.png"));
+    final ImageIcon p2 = new ImageIcon(getClass().getResource("/ConnectFour/player2.png"));
 
+    private void initializeGUI() {
+        
+        frame = new JFrame("Connect Four"); 
+        slot = new JLabel[column][row];
+        frame.getContentPane().setBackground(new java.awt.Color(30, 30, 30));
+        
+        GridLayout panelLayout = new GridLayout(column,row);
+        frame.setLayout(panelLayout);
+        
+         for (int column = 0; column < this.column; column++) {
+            for (int row = 0; row < this.row; row++) {
+                slot[column][row] = new JLabel();                
+                slot[column][row].setIcon(defaultIcon);
+                slot[column][row].setPreferredSize(new java.awt.Dimension(100, 100));
+                frame.add(slot[column][row]);
+            }
+        }
+        
+        frame.setSize(column*100,row*100);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
     /* Check for board being full ** This would be a draw */
     /* Returns 1 if still space on board left or 0 if totaly full ..ie draw*/
-    public int checkDraw()
-    {
+    public int checkDraw() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if(grid[j][i] == 0)
-                {
+                if (grid[j][i] == 0) {
                     return 1;
                 }
             }
@@ -98,6 +131,12 @@ public class Board {
         int add = determineRow(column);
         if (add != -1) {
             grid[column][add] = player;
+
+            if (player == 1) {
+                slot[column][add].setIcon(p1);
+            } else {
+                slot[column][add].setIcon(p2);
+            }
         }
     }
 
